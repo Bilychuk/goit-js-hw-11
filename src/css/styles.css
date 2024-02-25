@@ -103,6 +103,7 @@ input[type='text']:focus {
 .image-item {
   text-align: center;
 }
+
 .image-text {
   font-weight: 600;
   font-size: 12px;
@@ -118,11 +119,13 @@ input[type='text']:focus {
   letter-spacing: 0.04em;
   color: #2e2f42;
 }
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .loader {
   width: 48px;
   height: 48px;

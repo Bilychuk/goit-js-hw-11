@@ -7,7 +7,7 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 
-export const searchForm = document.querySelector(".form");
+const searchForm = document.querySelector(".form");
 const gallery = document.querySelector(".gallery");
 const loader = document.querySelector(".loader");
 const imageLightbox = new SimpleLightbox('.gallery .gallery-link', {
@@ -15,7 +15,6 @@ const imageLightbox = new SimpleLightbox('.gallery .gallery-link', {
                     }); 
 
 searchForm.addEventListener("submit", onSubmit);
-
 
 function onSubmit(event) {
     event.preventDefault();
@@ -27,32 +26,32 @@ function onSubmit(event) {
         const images = data.hits;
         if (input === "") {
         iziToast.error({
-            title: 'Error',
-            titleColor: '#fff',
-            message: 'Search query cannot be empty',
-            messageColor: '#fafafb',
-            messageSize: '16px',
-            backgroundColor: '#ef4040',
-            theme: 'dark',
-            iconUrl: errorIcon,
-            maxWidth: '432px',
-        });
-        searchForm.reset()
-        return;
-    } else if (images.length === 0) {  
+                title: 'Error',
+                titleColor: '#fff',
+                message: 'Search query cannot be empty',
+                messageColor: '#fafafb',
+                messageSize: '16px',
+                backgroundColor: '#ef4040',
+                theme: 'dark',
+                iconUrl: errorIcon,
+                maxWidth: '432px',
+            });
+            searchForm.reset()
+            return;
+        } else if (images.length === 0) {  
             iziToast.error({
-                    message: 'Sorry, there are no images matching your search query. Please try again!',
-                    messageColor: '#fafafb',
-                    messageSize: '16px',
-                    backgroundColor: '#ef4040',
-                    theme: 'dark',
-                    iconUrl: errorIcon,
-                    maxWidth: '432px',
+                message: 'Sorry, there are no images matching your search query. Please try again!',
+                messageColor: '#fafafb',
+                messageSize: '16px',
+                backgroundColor: '#ef4040',
+                theme: 'dark',
+                iconUrl: errorIcon,
+                maxWidth: '432px',
             })
             searchForm.reset()
             return;
             
-    } else {
+        } else {
             gallery.innerHTML = createGalleryMarkup(images);
             imageLightbox.refresh();
             gallery.addEventListener('click', selectImage);
@@ -76,11 +75,8 @@ function onSubmit(event) {
             theme: 'dark',
             iconUrl: errorIcon,
             maxWidth: '432px',
-            })   
+        })   
     }).finally(() => {
         loader.classList.add("is-hidden");
     })
 } 
-
-
-

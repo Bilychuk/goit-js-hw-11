@@ -1,6 +1,3 @@
-import { searchForm } from '../main';
-import errorIcon from "../img/x-octagon.svg";
-
 export function fetchImages(Q) {
     const KEY = '42515164-6d66b652ac661a4b366139ff0';
     const BASE_URI = 'https://pixabay.com/api/';
