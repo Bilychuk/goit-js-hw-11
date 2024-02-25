@@ -1,6 +1,4 @@
-import {searchForm} from '../main'
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
+import { searchForm } from '../main';
 import errorIcon from "../img/x-octagon.svg";
 
 export function fetchImages(Q) {
@@ -17,8 +15,5 @@ export function fetchImages(Q) {
                 throw new Error('Image error');
             }
             return response.json();
-        })
-        .catch(error => {   
-            alert('Error while fetching images from Pixabay!')    
         })
 };

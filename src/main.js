@@ -9,16 +9,23 @@ import "izitoast/dist/css/iziToast.min.css";
 
 export const searchForm = document.querySelector(".form");
 const gallery = document.querySelector(".gallery");
-const loaderSpan = document.querySelector("span");
-
+const loader = document.querySelector(".loader");
+const imageLightbox = new SimpleLightbox('.gallery .gallery-link', {
+                    captionsData: 'alt',
+                    }); 
 
 searchForm.addEventListener("submit", onSubmit);
 
+
 function onSubmit(event) {
     event.preventDefault();
+    gallery.innerHTML = "";
+    loader.classList.remove("is-hidden");
     const input = searchForm.elements.word.value.trim();
-    if (input === "") {
-        gallery.innerHTML = "";
+    
+    fetchImages(input).then(data => {
+        const images = data.hits;
+        if (input === "") {
         iziToast.error({
             title: 'Error',
             titleColor: '#fff',
@@ -32,13 +39,7 @@ function onSubmit(event) {
         });
         searchForm.reset()
         return;
-    }
-
-    fetchImages(input).then(data => {
-        const images = data.hits;
-        
-        if (images.length === 0) {
-            gallery.innerHTML = "";
+    } else if (images.length === 0) {  
             iziToast.error({
                     message: 'Sorry, there are no images matching your search query. Please try again!',
                     messageColor: '#fafafb',
@@ -51,29 +52,35 @@ function onSubmit(event) {
             searchForm.reset()
             return;
             
-        } else {
+    } else {
             gallery.innerHTML = createGalleryMarkup(images);
+            imageLightbox.refresh();
             gallery.addEventListener('click', selectImage);
-
             function selectImage(event) {
                 event.preventDefault();
                 const { className } = event.target;
                 if (className !== "gallery-image") {
                     return;
                 }
-                const imageLightbox = new SimpleLightbox('.gallery .gallery-link', {
-                    captionsData: 'alt',
-                }); 
-                imageLightbox.refresh();
-            }              
+            }  
         }
         searchForm.reset();
+    }).catch(error => {
+        iziToast.error({
+            title: 'Error',
+            titleColor: '#fff',
+            message: 'Error while fetching images from Pixabay!',
+            messageColor: '#fafafb',
+            messageSize: '16px',
+            backgroundColor: '#ef4040',
+            theme: 'dark',
+            iconUrl: errorIcon,
+            maxWidth: '432px',
+            })   
+    }).finally(() => {
+        loader.classList.add("is-hidden");
     })
 } 
-gallery.addEventListener("load", addLoader);
-function addLoader() {
-  return loaderSpan.classList.add("loader");
-}
 
 
 
