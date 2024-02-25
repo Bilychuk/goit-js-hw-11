@@ -19,19 +19,6 @@ export function fetchImages(Q) {
             return response.json();
         })
         .catch(error => {   
-        iziToast.error({
-            message: 'Error while fetching images from Pixabay!',
-            title: 'Error',
-            titleColor: '#fff',
-            messageColor: '#fafafb',
-            messageSize: '16px',
-            backgroundColor: '#ef4040',
-            theme: 'dark',
-            iconUrl: errorIcon,
-            maxWidth: '432px',
-            });
-        })
-        .finally(() => {
-          searchForm.reset();    
+            alert('Error while fetching images from Pixabay!')    
         })
 };

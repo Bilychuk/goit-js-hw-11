@@ -18,6 +18,7 @@ function onSubmit(event) {
     event.preventDefault();
     const input = searchForm.elements.word.value.trim();
     if (input === "") {
+        gallery.innerHTML = "";
         iziToast.error({
             title: 'Error',
             titleColor: '#fff',
@@ -29,6 +30,7 @@ function onSubmit(event) {
             iconUrl: errorIcon,
             maxWidth: '432px',
         });
+        searchForm.reset()
         return;
     }
 
@@ -37,7 +39,7 @@ function onSubmit(event) {
         
         if (images.length === 0) {
             gallery.innerHTML = "";
-            return iziToast.error({
+            iziToast.error({
                     message: 'Sorry, there are no images matching your search query. Please try again!',
                     messageColor: '#fafafb',
                     messageSize: '16px',
@@ -45,7 +47,10 @@ function onSubmit(event) {
                     theme: 'dark',
                     iconUrl: errorIcon,
                     maxWidth: '432px',
-                });
+            })
+            searchForm.reset()
+            return;
+            
         } else {
             gallery.innerHTML = createGalleryMarkup(images);
             gallery.addEventListener('click', selectImage);
@@ -61,7 +66,8 @@ function onSubmit(event) {
                 }); 
                 imageLightbox.refresh();
             }              
-            }
+        }
+        searchForm.reset();
     })
 } 
 gallery.addEventListener("load", addLoader);
