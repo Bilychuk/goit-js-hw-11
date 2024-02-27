@@ -14,17 +14,14 @@ const imageLightbox = new SimpleLightbox('.gallery .gallery-link', {
                     captionsData: 'alt',
                     }); 
 
+ 
 searchForm.addEventListener("submit", onSubmit);
 
 function onSubmit(event) {
     event.preventDefault();
     gallery.innerHTML = "";
-    loader.classList.remove("is-hidden");
     const input = searchForm.elements.word.value.trim();
-    
-    fetchImages(input).then(data => {
-        const images = data.hits;
-        if (input === "") {
+    if (input === "") {
         iziToast.error({
                 title: 'Error',
                 titleColor: '#fff',
@@ -38,7 +35,13 @@ function onSubmit(event) {
             });
             searchForm.reset()
             return;
-        } else if (images.length === 0) {  
+    }
+    
+    loader.classList.remove("is-hidden");
+
+    fetchImages(input).then(data => {
+        const images = data.hits;
+         if (images.length === 0) {  
             iziToast.error({
                 message: 'Sorry, there are no images matching your search query. Please try again!',
                 messageColor: '#fafafb',
@@ -54,14 +57,6 @@ function onSubmit(event) {
         } else {
             gallery.innerHTML = createGalleryMarkup(images);
             imageLightbox.refresh();
-            gallery.addEventListener('click', selectImage);
-            function selectImage(event) {
-                event.preventDefault();
-                const { className } = event.target;
-                if (className !== "gallery-image") {
-                    return;
-                }
-            }  
         }
         searchForm.reset();
     }).catch(error => {
@@ -79,4 +74,12 @@ function onSubmit(event) {
     }).finally(() => {
         loader.classList.add("is-hidden");
     })
+} 
+
+function selectImage(event) {
+    event.preventDefault();
+    const { className } = event.target;
+    if (className !== "gallery-image") {
+        return;
+    }
 } 
